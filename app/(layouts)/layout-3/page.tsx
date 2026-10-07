@@ -43,10 +43,9 @@ import {
   Sparkles,
   ExternalLink,
   Compass,
-  Tv,
-  Eye,
   Zap,
   Server,
+  Terminal,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
@@ -250,12 +249,12 @@ export default function Page() {
   }, [stats.liveSessions]);
 
   return (
-    <div className="container-fluid px-4 sm:px-6 py-5 space-y-6">
-      {/* Top Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card/95 to-muted/40 shadow-xs">
-        <div className="space-y-1.5">
+    <div className="p-4 sm:p-6 lg:p-7 space-y-6 max-w-full">
+      {/* Page Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-5">
+        <div className="space-y-1">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
+            <h1 className="text-2xl font-black tracking-tight text-foreground">
               CloudStream Live Analytics
             </h1>
             {isRealtimeActive ? (
@@ -263,7 +262,7 @@ export default function Page() {
                 variant="success"
                 appearance="light"
                 size="sm"
-                className="gap-1.5 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                className="gap-1.5 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25"
               >
                 <span className="size-2 rounded-full bg-emerald-500 animate-ping" />
                 Live WebSocket
@@ -291,7 +290,7 @@ export default function Page() {
             size="sm"
             onClick={loadStats}
             disabled={isLoading}
-            className="gap-1.5 text-xs h-9 font-medium shadow-xs"
+            className="gap-1.5 text-xs h-8.5 font-medium"
           >
             <RefreshCw className={`size-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
@@ -301,7 +300,7 @@ export default function Page() {
             variant="primary"
             size="sm"
             asChild
-            className="gap-1.5 text-xs h-9 font-medium shadow-xs"
+            className="gap-1.5 text-xs h-8.5 font-medium"
           >
             <Link
               href="https://github.com/nehalDIU/nehal-CloudStream"
@@ -318,7 +317,7 @@ export default function Page() {
       {/* 4 Core Realtime KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Live Users Online */}
-        <Card className="relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card hover:border-emerald-500/50 transition-all shadow-xs">
+        <Card className="border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card hover:border-emerald-500/50 transition-all shadow-xs">
           <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
             <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
               <span className="relative flex size-2.5">
@@ -327,12 +326,12 @@ export default function Page() {
               </span>
               Live Users Online
             </CardDescription>
-            <div className="size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
               <Radio className="size-4 animate-pulse" />
             </div>
           </CardHeader>
           <CardContent className="pt-1">
-            <div className="text-3xl sm:text-4xl font-black tracking-tight text-emerald-400 font-mono">
+            <div className="text-3xl font-black tracking-tight text-emerald-400 font-mono">
               {stats.summary.liveUsers}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1.5 font-medium">
@@ -342,18 +341,18 @@ export default function Page() {
         </Card>
 
         {/* KPI 2: Streams Played */}
-        <Card className="relative overflow-hidden border border-sky-500/30 bg-gradient-to-br from-sky-500/10 via-card to-card hover:border-sky-500/50 transition-all shadow-xs">
+        <Card className="border border-sky-500/30 bg-gradient-to-br from-sky-500/10 via-card to-card hover:border-sky-500/50 transition-all shadow-xs">
           <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
             <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
               <Film className="size-3.5 text-sky-400" />
               Streams Played (Today)
             </CardDescription>
-            <div className="size-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400">
+            <div className="size-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0">
               <PlayCircle className="size-4" />
             </div>
           </CardHeader>
           <CardContent className="pt-1">
-            <div className="text-3xl sm:text-4xl font-black tracking-tight text-sky-400 font-mono">
+            <div className="text-3xl font-black tracking-tight text-sky-400 font-mono">
               {stats.summary.playsToday}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
@@ -363,18 +362,18 @@ export default function Page() {
         </Card>
 
         {/* KPI 3: Searches Today */}
-        <Card className="relative overflow-hidden border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-card hover:border-violet-500/50 transition-all shadow-xs">
+        <Card className="border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-card hover:border-violet-500/50 transition-all shadow-xs">
           <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
             <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
               <Search className="size-3.5 text-violet-400" />
               Searches (Today)
             </CardDescription>
-            <div className="size-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400">
+            <div className="size-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 shrink-0">
               <Search className="size-4" />
             </div>
           </CardHeader>
           <CardContent className="pt-1">
-            <div className="text-3xl sm:text-4xl font-black tracking-tight text-violet-400 font-mono">
+            <div className="text-3xl font-black tracking-tight text-violet-400 font-mono">
               {stats.summary.searchesToday}
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
@@ -384,18 +383,18 @@ export default function Page() {
         </Card>
 
         {/* KPI 4: Scraper Health */}
-        <Card className="relative overflow-hidden border border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-card to-card hover:border-teal-500/50 transition-all shadow-xs">
+        <Card className="border border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-card to-card hover:border-teal-500/50 transition-all shadow-xs">
           <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
             <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
               <ShieldCheck className="size-3.5 text-teal-400" />
               Scraper Health Status
             </CardDescription>
-            <div className="size-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400">
+            <div className="size-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400 shrink-0">
               <ShieldCheck className="size-4" />
             </div>
           </CardHeader>
           <CardContent className="pt-1">
-            <div className="text-3xl sm:text-4xl font-black tracking-tight text-teal-400 font-mono flex items-center gap-2.5">
+            <div className="text-3xl font-black tracking-tight text-teal-400 font-mono flex items-center gap-2">
               <span>{stats.summary.errorsToday === 0 ? '100%' : `${Math.max(0, 100 - stats.summary.errorsToday * 2)}%`}</span>
               {stats.summary.errorsToday === 0 ? (
                 <Badge variant="success" size="xs" className="font-semibold bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
@@ -416,9 +415,9 @@ export default function Page() {
 
       {/* Main Tabs Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-        <div className="border-b border-border/80 pb-1">
-          <TabsList variant="line" size="md" className="gap-4">
-            <TabsTrigger value="overview" className="gap-2 text-xs sm:text-sm font-semibold">
+        <div className="border-b border-border/80">
+          <TabsList variant="line" size="md" className="gap-6">
+            <TabsTrigger value="overview" className="gap-2 text-sm font-semibold pb-3">
               <Activity className="size-4 text-emerald-400" />
               Live Presence & Feed
               {stats.liveSessions.length > 0 && (
@@ -427,11 +426,11 @@ export default function Page() {
                 </Badge>
               )}
             </TabsTrigger>
-            <TabsTrigger value="providers" className="gap-2 text-xs sm:text-sm font-semibold">
+            <TabsTrigger value="providers" className="gap-2 text-sm font-semibold pb-3">
               <Boxes className="size-4 text-sky-400" />
               Providers Radar (23)
             </TabsTrigger>
-            <TabsTrigger value="content" className="gap-2 text-xs sm:text-sm font-semibold">
+            <TabsTrigger value="content" className="gap-2 text-sm font-semibold pb-3">
               <Flame className="size-4 text-violet-400" />
               Top Searches & Content
             </TabsTrigger>
@@ -440,7 +439,7 @@ export default function Page() {
 
         {/* TAB 1: OVERVIEW & REAL-TIME PRESENCE */}
         <TabsContent value="overview" className="space-y-6 mt-0">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Live Active Sessions Table */}
             <Card className="lg:col-span-8 border-border/80 shadow-xs">
               <CardHeader className="border-b border-border/60 pb-4">
@@ -454,7 +453,7 @@ export default function Page() {
                       Real-time list of devices actively browsing or streaming right now
                     </CardDescription>
                   </div>
-                  <Badge variant="secondary" size="xs" className="font-mono">
+                  <Badge variant="secondary" size="xs" className="font-mono text-muted-foreground">
                     2 min window
                   </Badge>
                 </div>
@@ -474,27 +473,27 @@ export default function Page() {
                   <Table>
                     <TableHeader className="bg-muted/40">
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="font-semibold text-xs">Device</TableHead>
-                        <TableHead className="font-semibold text-xs">Provider</TableHead>
-                        <TableHead className="font-semibold text-xs">Activity / Title</TableHead>
-                        <TableHead className="font-semibold text-xs">Location</TableHead>
-                        <TableHead className="text-right font-semibold text-xs">Last Ping</TableHead>
+                        <TableHead className="w-[130px] font-semibold text-xs">Device</TableHead>
+                        <TableHead className="w-[150px] font-semibold text-xs">Provider</TableHead>
+                        <TableHead className="min-w-[200px] font-semibold text-xs">Activity / Title</TableHead>
+                        <TableHead className="w-[180px] font-semibold text-xs">Location</TableHead>
+                        <TableHead className="w-[140px] text-right font-semibold text-xs">Last Ping</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {stats.liveSessions.map((session) => (
                         <TableRow key={session.device_id} className="hover:bg-muted/30 transition-colors">
-                          <TableCell className="font-mono text-xs text-muted-foreground">
-                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/60 border border-border/60 text-[11px]">
+                          <TableCell className="w-[130px] font-mono text-xs text-muted-foreground">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-muted/60 border border-border/60 text-[11px]">
                               📱 {session.device_id.slice(0, 8)}...
                             </span>
                           </TableCell>
-                          <TableCell>
+                          <TableCell className="w-[150px]">
                             <Badge variant="primary" appearance="light" size="sm" className="font-semibold">
                               {session.provider}
                             </Badge>
                           </TableCell>
-                          <TableCell className="max-w-[220px] truncate text-xs">
+                          <TableCell className="min-w-[200px] max-w-[280px] truncate text-xs">
                             {session.current_title ? (
                               <span className="font-semibold text-foreground flex items-center gap-1.5 truncate">
                                 <Film className="size-3.5 text-sky-400 shrink-0" />
@@ -507,13 +506,13 @@ export default function Page() {
                               </span>
                             )}
                           </TableCell>
-                          <TableCell className="text-xs text-muted-foreground">
+                          <TableCell className="w-[180px] text-xs text-muted-foreground">
                             <span className="inline-flex items-center gap-1 text-[11px] bg-muted/40 px-2 py-0.5 rounded-md border border-border/50">
                               🌍 {session.country || 'Global'} {session.city ? `(${session.city})` : ''}
                             </span>
                           </TableCell>
-                          <TableCell className="text-right text-xs font-mono text-muted-foreground">
-                            <span className="inline-flex items-center gap-1.5 text-emerald-400">
+                          <TableCell className="w-[140px] text-right text-xs font-mono text-muted-foreground">
+                            <span className="inline-flex items-center gap-1.5 text-emerald-400 font-medium">
                               <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
                               {formatDistanceToNow(new Date(session.last_active), {
                                 addSuffix: true,
@@ -536,10 +535,10 @@ export default function Page() {
                     <Zap className="size-4 text-violet-400" />
                     Live Activity Stream
                   </CardTitle>
-                  <CardDescription className="text-xs">Instant telemetry ticker</CardDescription>
+                  <CardDescription className="text-xs">Instant event ticker</CardDescription>
                 </div>
               </CardHeader>
-              <CardContent className="p-4 space-y-2.5 max-h-[500px] overflow-y-auto">
+              <CardContent className="p-4 space-y-2.5 max-h-[490px] overflow-y-auto">
                 {stats.recentEvents.length === 0 ? (
                   <p className="text-xs text-muted-foreground text-center py-12">
                     No recent events received yet today.
@@ -616,7 +615,7 @@ export default function Page() {
 
         {/* TAB 2: PROVIDERS RADAR (23 PROVIDERS) */}
         <TabsContent value="providers" className="space-y-6 mt-0">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Live Traffic Share */}
             <Card className="lg:col-span-4 border-border/80 shadow-xs">
               <CardHeader className="border-b border-border/60 pb-4">
@@ -677,27 +676,27 @@ export default function Page() {
                 <Table>
                   <TableHeader className="bg-muted/40">
                     <TableRow className="hover:bg-transparent">
-                      <TableHead className="font-semibold text-xs">Provider Name</TableHead>
-                      <TableHead className="font-semibold text-xs">Category</TableHead>
-                      <TableHead className="font-semibold text-xs">Coverage Region</TableHead>
-                      <TableHead className="text-right font-semibold text-xs">Health Status</TableHead>
+                      <TableHead className="w-[200px] font-semibold text-xs">Provider Name</TableHead>
+                      <TableHead className="w-[140px] font-semibold text-xs">Category</TableHead>
+                      <TableHead className="min-w-[150px] font-semibold text-xs">Coverage Region</TableHead>
+                      <TableHead className="w-[130px] text-right font-semibold text-xs">Health Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {ALL_PROVIDERS.map((p) => (
                       <TableRow key={p.name} className="hover:bg-muted/30 transition-colors">
-                        <TableCell className="font-bold text-xs text-foreground">
+                        <TableCell className="w-[200px] font-bold text-xs text-foreground">
                           {p.name}
                         </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">
+                        <TableCell className="w-[140px] text-xs text-muted-foreground">
                           <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[11px] border border-border/50">
                             {p.category}
                           </span>
                         </TableCell>
-                        <TableCell className="text-xs text-muted-foreground">
+                        <TableCell className="min-w-[150px] text-xs text-muted-foreground">
                           {p.region}
                         </TableCell>
-                        <TableCell className="text-right">
+                        <TableCell className="w-[130px] text-right">
                           <Badge variant="success" appearance="light" size="xs" className="gap-1 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                             <CheckCircle2 className="size-3 text-emerald-400" />
                             Operational
@@ -714,7 +713,7 @@ export default function Page() {
 
         {/* TAB 3: SEARCH & CONTENT TRENDS */}
         <TabsContent value="content" className="space-y-6 mt-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <Card className="border-border/80 shadow-xs">
               <CardHeader className="border-b border-border/60 pb-4">
                 <CardTitle className="text-base font-bold flex items-center gap-2">
@@ -734,24 +733,24 @@ export default function Page() {
                   <Table>
                     <TableHeader className="bg-muted/40">
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="font-semibold text-xs">Keyword</TableHead>
-                        <TableHead className="text-right font-semibold text-xs">Searches</TableHead>
-                        <TableHead className="text-right font-semibold text-xs">Last Seen</TableHead>
+                        <TableHead className="min-w-[180px] font-semibold text-xs">Keyword</TableHead>
+                        <TableHead className="w-[100px] text-right font-semibold text-xs">Searches</TableHead>
+                        <TableHead className="w-[140px] text-right font-semibold text-xs">Last Seen</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {stats.topSearches.map((item, idx) => (
                         <TableRow key={idx} className="hover:bg-muted/30 transition-colors">
-                          <TableCell className="font-semibold text-xs flex items-center gap-2">
-                            <span className="size-5 rounded-md bg-muted/80 border border-border flex items-center justify-center text-[10px] font-mono font-bold text-foreground">
+                          <TableCell className="min-w-[180px] font-semibold text-xs flex items-center gap-2">
+                            <span className="size-5 rounded-md bg-muted/80 border border-border flex items-center justify-center text-[10px] font-mono font-bold text-foreground shrink-0">
                               {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
                             </span>
-                            {item.query}
+                            <span className="truncate">{item.query}</span>
                           </TableCell>
-                          <TableCell className="text-right font-mono text-xs font-bold text-violet-400">
+                          <TableCell className="w-[100px] text-right font-mono text-xs font-bold text-violet-400">
                             {item.count}
                           </TableCell>
-                          <TableCell className="text-right text-xs text-muted-foreground font-mono">
+                          <TableCell className="w-[140px] text-right text-xs text-muted-foreground font-mono">
                             {formatDistanceToNow(new Date(item.lastSeen), { addSuffix: true })}
                           </TableCell>
                         </TableRow>

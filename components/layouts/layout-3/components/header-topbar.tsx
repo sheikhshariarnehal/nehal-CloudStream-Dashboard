@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import {
+  Clock,
   Database,
   Github,
   Radio,
@@ -12,29 +14,68 @@ import { UserDropdownMenu } from '../../layout-1/shared/topbar/user-dropdown-men
 import Link from 'next/link';
 
 export function HeaderTopbar() {
+  const [timeStr, setTimeStr] = useState<string>('');
+
+  useEffect(() => {
+    const update = () => {
+      setTimeStr(
+        new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+      );
+    };
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="flex items-center gap-2 lg:gap-3">
+    <div className="flex items-center gap-2 sm:gap-3">
+      {/* Live Engine Status Badge */}
+      <Badge
+        variant="success"
+        appearance="light"
+        size="sm"
+        className="hidden md:inline-flex gap-1.5 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 h-8 px-2.5"
+      >
+        <Radio className="size-3.5 text-emerald-400 animate-pulse" />
+        <span>Realtime Active</span>
+      </Badge>
+
+      {/* Live Clock Badge */}
+      <Badge
+        variant="secondary"
+        appearance="light"
+        size="sm"
+        className="hidden sm:inline-flex gap-1.5 font-mono text-xs bg-muted/60 border border-border/80 text-foreground h-8 px-2.5"
+      >
+        <Clock className="size-3.5 text-muted-foreground" />
+        <span>{timeStr || 'Live Sync'}</span>
+      </Badge>
+
       {/* GitHub Repo Link */}
-      <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex gap-1.5 text-xs">
+      <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex gap-1.5 text-xs h-8 px-2.5">
         <Link
           href="https://github.com/nehalDIU/nehal-CloudStream"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Github className="size-3.5" />
-          <span>GitHub Repo</span>
+          <span>GitHub</span>
         </Link>
       </Button>
 
       {/* Supabase Link */}
-      <Button variant="outline" size="sm" asChild className="hidden md:inline-flex gap-1.5 text-xs">
+      <Button variant="outline" size="sm" asChild className="hidden md:inline-flex gap-1.5 text-xs h-8 px-2.5">
         <Link
           href="https://supabase.com/dashboard/project/zxghphjvwjmvrdjouziq"
           target="_blank"
           rel="noopener noreferrer"
         >
           <Database className="size-3.5 text-emerald-500" />
-          <span>Supabase DB</span>
+          <span>Supabase</span>
         </Link>
       </Button>
 

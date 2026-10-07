@@ -17,36 +17,19 @@ export function Main({ children }: { children: React.ReactNode }) {
   useBodyClass(`
     [--header-height:58px] 
     [--sidebar-width:58px] 
-    [--navbar-height:56px] 
-    lg:overflow-hidden 
     bg-muted!
   `);
 
   return (
-    <div className="flex grow">
+    <div className="flex grow min-h-screen">
       <Header />
 
       <div className="flex flex-col lg:flex-row grow pt-(--header-height)">
         {!isMobileMode && <Sidebar />}
 
-        <Navbar />
-
-        <div className="flex grow rounded-b-xl bg-background border-x border-b border-border lg:mt-(--navbar-height) mx-5 lg:ms-(--sidebar-width) mb-5">
-          <div className="flex flex-col grow kt-scrollable-y lg:[scrollbar-width:auto] pt-7 lg:[&_[data-slot=container]]:pe-2">
+        <div className="flex grow rounded-xl bg-background border border-border mt-3 mx-3 sm:mx-4 lg:ms-[66px] mb-4 shadow-xs">
+          <div className="flex flex-col grow kt-scrollable-y">
             <main className="grow" role="content">
-              {pathname === '/' && (
-                <Toolbar>
-                  <ToolbarHeading />
-                  <ToolbarActions>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href={'/layout-3/empty'}>
-                        <Download />
-                        Export
-                      </Link>
-                    </Button>
-                  </ToolbarActions>
-                </Toolbar>
-              )}
               {children}
             </main>
             <Footer />
