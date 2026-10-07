@@ -37,7 +37,7 @@ export function HeaderLogo() {
           </SheetContent>
         </Sheet>
 
-        <Link href="/layout-3" className="mx-1 flex items-center gap-2">
+        <Link href="/" className="mx-1 flex items-center gap-2">
           <img
             src={toAbsoluteUrl('/media/app/mini-logo-primary.svg')}
             className="dark:hidden min-h-[24px]"
@@ -53,7 +53,7 @@ export function HeaderLogo() {
 
       {/* Brand & Section Title */}
       <div className="flex items-center gap-2.5">
-        <Link href="/layout-3" className="text-foreground font-bold text-base hover:text-primary transition-colors">
+        <Link href="/" className="text-foreground font-bold text-base hover:text-primary transition-colors">
           Nehal CloudStream
         </Link>
         <span className="text-sm text-muted-foreground font-medium hidden md:inline">
