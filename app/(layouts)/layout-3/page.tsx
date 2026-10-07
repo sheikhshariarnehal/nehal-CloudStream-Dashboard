@@ -250,173 +250,10 @@ export default function Page() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-7 space-y-6 max-w-full">
-      {/* Page Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-5">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl font-black tracking-tight text-foreground">
-              CloudStream Live Analytics
-            </h1>
-            {isRealtimeActive ? (
-              <Badge
-                variant="success"
-                appearance="light"
-                size="sm"
-                className="gap-1.5 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25"
-              >
-                <span className="size-2 rounded-full bg-emerald-500 animate-ping" />
-                Live WebSocket
-              </Badge>
-            ) : (
-              <Badge
-                variant="secondary"
-                appearance="light"
-                size="sm"
-                className="gap-1.5 font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20"
-              >
-                <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
-                Connecting WebSocket...
-              </Badge>
-            )}
-          </div>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            Real-time live presence, scraper health & content telemetry across all 23 repository providers
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2.5 shrink-0">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={loadStats}
-            disabled={isLoading}
-            className="gap-1.5 text-xs h-8.5 font-medium"
-          >
-            <RefreshCw className={`size-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </Button>
-
-          <Button
-            variant="primary"
-            size="sm"
-            asChild
-            className="gap-1.5 text-xs h-8.5 font-medium"
-          >
-            <Link
-              href="https://github.com/nehalDIU/nehal-CloudStream"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalLink className="size-3.5" />
-              <span>Plugins Repo</span>
-            </Link>
-          </Button>
-        </div>
-      </div>
-
-      {/* 4 Core Realtime KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* KPI 1: Live Users Online */}
-        <Card className="border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card hover:border-emerald-500/50 transition-all shadow-xs">
-          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
-            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
-              <span className="relative flex size-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full size-2.5 bg-emerald-500"></span>
-              </span>
-              Live Users Online
-            </CardDescription>
-            <div className="size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
-              <Radio className="size-4 animate-pulse" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-1">
-            <div className="text-3xl font-black tracking-tight text-emerald-400 font-mono">
-              {stats.summary.liveUsers}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1.5 font-medium">
-              <Clock className="size-3 text-emerald-400" /> Freshness window: last 2 mins
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* KPI 2: Streams Played */}
-        <Card className="border border-sky-500/30 bg-gradient-to-br from-sky-500/10 via-card to-card hover:border-sky-500/50 transition-all shadow-xs">
-          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
-            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
-              <Film className="size-3.5 text-sky-400" />
-              Streams Played (Today)
-            </CardDescription>
-            <div className="size-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0">
-              <PlayCircle className="size-4" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-1">
-            <div className="text-3xl font-black tracking-tight text-sky-400 font-mono">
-              {stats.summary.playsToday}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
-              Playback link extractions resolved
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* KPI 3: Searches Today */}
-        <Card className="border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-card hover:border-violet-500/50 transition-all shadow-xs">
-          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
-            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
-              <Search className="size-3.5 text-violet-400" />
-              Searches (Today)
-            </CardDescription>
-            <div className="size-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 shrink-0">
-              <Search className="size-4" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-1">
-            <div className="text-3xl font-black tracking-tight text-violet-400 font-mono">
-              {stats.summary.searchesToday}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
-              User query searches across providers
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* KPI 4: Scraper Health */}
-        <Card className="border border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-card to-card hover:border-teal-500/50 transition-all shadow-xs">
-          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
-            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
-              <ShieldCheck className="size-3.5 text-teal-400" />
-              Scraper Health Status
-            </CardDescription>
-            <div className="size-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400 shrink-0">
-              <ShieldCheck className="size-4" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-1">
-            <div className="text-3xl font-black tracking-tight text-teal-400 font-mono flex items-center gap-2">
-              <span>{stats.summary.errorsToday === 0 ? '100%' : `${Math.max(0, 100 - stats.summary.errorsToday * 2)}%`}</span>
-              {stats.summary.errorsToday === 0 ? (
-                <Badge variant="success" size="xs" className="font-semibold bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
-                  Optimal
-                </Badge>
-              ) : (
-                <Badge variant="warning" size="xs" className="font-semibold">
-                  {stats.summary.errorsToday} Errors
-                </Badge>
-              )}
-            </div>
-            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
-              Zero blocking crashes detected
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Main Tabs Navigation */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-        <div className="border-b border-border/80">
-          <TabsList variant="line" size="md" className="gap-6">
+      {/* Main Tabs Navigation & Top Action Bar */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80">
+          <TabsList variant="line" size="md" className="gap-4 sm:gap-6 border-b-0 pb-0 -mb-px overflow-x-auto">
             <TabsTrigger value="overview" className="gap-2 text-sm font-semibold pb-3">
               <Activity className="size-4 text-emerald-400" />
               Live Presence & Feed
@@ -435,6 +272,134 @@ export default function Page() {
               Top Searches & Content
             </TabsTrigger>
           </TabsList>
+
+          <div className="flex items-center gap-2.5 shrink-0 pb-3">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={loadStats}
+              disabled={isLoading}
+              className="gap-1.5 text-xs h-8.5 font-medium"
+            >
+              <RefreshCw className={`size-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
+            </Button>
+
+            <Button
+              variant="primary"
+              size="sm"
+              asChild
+              className="gap-1.5 text-xs h-8.5 font-medium"
+            >
+              <Link
+                href="https://github.com/nehalDIU/nehal-CloudStream"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink className="size-3.5" />
+                <span>Plugins Repo</span>
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* 4 Core Realtime KPI Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* KPI 1: Live Users Online */}
+          <Card className="border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card hover:border-emerald-500/50 transition-all shadow-xs">
+            <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+              <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+                <span className="relative flex size-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full size-2.5 bg-emerald-500"></span>
+                </span>
+                Live Users Online
+              </CardDescription>
+              <div className="size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                <Radio className="size-4 animate-pulse" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <div className="text-3xl font-black tracking-tight text-emerald-400 font-mono">
+                {stats.summary.liveUsers}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1.5 font-medium">
+                <Clock className="size-3 text-emerald-400" /> Freshness window: last 2 mins
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* KPI 2: Streams Played */}
+          <Card className="border border-sky-500/30 bg-gradient-to-br from-sky-500/10 via-card to-card hover:border-sky-500/50 transition-all shadow-xs">
+            <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+              <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+                <Film className="size-3.5 text-sky-400" />
+                Streams Played (Today)
+              </CardDescription>
+              <div className="size-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400 shrink-0">
+                <PlayCircle className="size-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <div className="text-3xl font-black tracking-tight text-sky-400 font-mono">
+                {stats.summary.playsToday}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+                Playback link extractions resolved
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* KPI 3: Searches Today */}
+          <Card className="border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-card hover:border-violet-500/50 transition-all shadow-xs">
+            <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+              <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+                <Search className="size-3.5 text-violet-400" />
+                Searches (Today)
+              </CardDescription>
+              <div className="size-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400 shrink-0">
+                <Search className="size-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <div className="text-3xl font-black tracking-tight text-violet-400 font-mono">
+                {stats.summary.searchesToday}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+                User query searches across providers
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* KPI 4: Scraper Health */}
+          <Card className="border border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-card to-card hover:border-teal-500/50 transition-all shadow-xs">
+            <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+              <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+                <ShieldCheck className="size-3.5 text-teal-400" />
+                Scraper Health Status
+              </CardDescription>
+              <div className="size-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400 shrink-0">
+                <ShieldCheck className="size-4" />
+              </div>
+            </CardHeader>
+            <CardContent className="pt-1">
+              <div className="text-3xl font-black tracking-tight text-teal-400 font-mono flex items-center gap-2">
+                <span>{stats.summary.errorsToday === 0 ? '100%' : `${Math.max(0, 100 - stats.summary.errorsToday * 2)}%`}</span>
+                {stats.summary.errorsToday === 0 ? (
+                  <Badge variant="success" size="xs" className="font-semibold bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
+                    Optimal
+                  </Badge>
+                ) : (
+                  <Badge variant="warning" size="xs" className="font-semibold">
+                    {stats.summary.errorsToday} Errors
+                  </Badge>
+                )}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+                Zero blocking crashes detected
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* TAB 1: OVERVIEW & REAL-TIME PRESENCE */}
@@ -743,7 +708,7 @@ export default function Page() {
                         <TableRow key={idx} className="hover:bg-muted/30 transition-colors">
                           <TableCell className="min-w-[180px] font-semibold text-xs flex items-center gap-2">
                             <span className="size-5 rounded-md bg-muted/80 border border-border flex items-center justify-center text-[10px] font-mono font-bold text-foreground shrink-0">
-                              {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
+                              {idx === 0 ? \'🥇\' : idx === 1 ? \'🥈\' : idx === 2 ? \'🥉\' : `#${idx + 1}`}
                             </span>
                             <span className="truncate">{item.query}</span>
                           </TableCell>
