@@ -8,6 +8,7 @@ import {
   Flame,
   Github,
   Radio,
+  TrendingUp,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -17,8 +18,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export function SidebarMenu() {
+  const pathname = usePathname();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<string>('sessions');
 
   useEffect(() => {
@@ -65,27 +70,38 @@ export function SidebarMenu() {
   const items = [
     {
       icon: Activity,
+      path: '/#sessions',
       targetHash: 'sessions',
       title: 'Live Command Center',
-      isActive: activeTab === 'sessions',
+      isActive: (pathname === '/' || pathname === '/layout-3') && activeTab === 'sessions',
+    },
+    {
+      icon: TrendingUp,
+      path: '/analytics',
+      title: 'Web Analytics & Trends',
+      isRoute: true,
+      isActive: pathname === '/analytics',
     },
     {
       icon: Radio,
+      path: '/#sessions',
       targetHash: 'sessions',
       title: 'Live Active Sessions & Feed',
-      isActive: activeTab === 'sessions',
+      isActive: (pathname === '/' || pathname === '/layout-3') && activeTab === 'sessions',
     },
     {
       icon: Boxes,
+      path: '/#providers',
       targetHash: 'providers',
       title: 'Providers Radar (23 Fleet)',
-      isActive: activeTab === 'providers',
+      isActive: (pathname === '/' || pathname === '/layout-3') && activeTab === 'providers',
     },
     {
       icon: Flame,
+      path: '/#content',
       targetHash: 'content',
       title: 'Top Searches & Trending Content',
-      isActive: activeTab === 'content',
+      isActive: (pathname === '/' || pathname === '/layout-3') && activeTab === 'content',
     },
     {
       icon: Database,
@@ -109,7 +125,16 @@ export function SidebarMenu() {
       return;
     }
 
+    if (item.isRoute && item.path) {
+      router.push(item.path);
+      return;
+    }
+
     if (item.targetHash) {
+      if (pathname !== '/' && pathname !== '/layout-3') {
+        router.push(item.path);
+        return;
+      }
       setActiveTab(item.targetHash);
       if (typeof window !== 'undefined') {
         window.history.replaceState(

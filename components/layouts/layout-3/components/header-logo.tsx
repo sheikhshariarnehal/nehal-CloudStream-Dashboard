@@ -1,6 +1,6 @@
 'use client';
 
-import { Activity, Menu } from 'lucide-react';
+import { Activity, Menu, TrendingUp } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import {
   Sheet,
@@ -12,9 +12,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { SidebarMenu } from './sidebar-menu';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function HeaderLogo() {
+  const pathname = usePathname();
+  const isAnalytics = pathname === '/analytics';
+
   return (
     <div className="flex items-center gap-3">
       {/* Logo and Mobile Menu Trigger */}
@@ -61,11 +65,20 @@ export function HeaderLogo() {
         </span>
         <div className="hidden md:flex items-center gap-2">
           <span className="text-sm font-medium text-foreground">
-            Analytics Command Center
+            {isAnalytics ? 'Web Analytics & Trends' : 'Live Command Center'}
           </span>
-          <Badge variant="success" appearance="light" size="xs" className="gap-1">
-            <span className="size-1.5 rounded-full bg-green-500 animate-ping" />
-            v1.0 Live
+          <Badge
+            variant={isAnalytics ? 'primary' : 'success'}
+            appearance="light"
+            size="xs"
+            className="gap-1 font-medium"
+          >
+            {isAnalytics ? (
+              <TrendingUp className="size-3 text-primary" />
+            ) : (
+              <span className="size-1.5 rounded-full bg-green-500 animate-ping" />
+            )}
+            {isAnalytics ? 'Vercel Engine' : 'v1.0 Live'}
           </Badge>
         </div>
       </div>
