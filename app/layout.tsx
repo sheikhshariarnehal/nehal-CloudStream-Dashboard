@@ -11,9 +11,10 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Metronic',
-    default: 'Metronic', // a default is required when creating a template
+    template: '%s | CloudStream Analytics',
+    default: 'CloudStream Analytics | Live Telemetry & Scraper Health',
   },
+  description: 'Real-time presence, scraper health & content telemetry across CloudStream providers repository',
 };
 
 export default async function RootLayout({
