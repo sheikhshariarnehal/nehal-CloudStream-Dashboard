@@ -1,14 +1,12 @@
+'use client';
+
 import {
-  BarChart3,
-  Bell,
-  CheckSquare,
-  Code,
-  HelpCircle,
-  MessageSquare,
-  Settings,
-  Shield,
-  UserCircle,
-  Users,
+  Activity,
+  Boxes,
+  Database,
+  Flame,
+  Github,
+  Radio,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -31,61 +29,43 @@ export interface Item {
 export function SidebarMenu() {
   const items: Item[] = [
     {
-      icon: BarChart3,
+      icon: Activity,
       path: '/layout-3',
-      title: 'Dashboard',
-    },
-    {
-      icon: UserCircle,
-      path: '#',
-      title: 'Profile',
-    },
-    {
-      icon: Settings,
-      path: '#',
-      title: 'Account',
-    },
-    {
-      icon: Users,
-      path: '#',
-      title: 'Network',
+      title: 'Command Center',
       active: true,
     },
     {
-      icon: Shield,
-      path: '#',
-      title: 'Plans',
+      icon: Radio,
+      path: '/layout-3#sessions',
+      title: 'Live Active Sessions',
     },
     {
-      icon: MessageSquare,
-      path: '#',
-      title: 'Security Logs',
+      icon: Boxes,
+      path: '/layout-3#providers',
+      title: 'Providers Radar (23)',
     },
     {
-      icon: Bell,
-      path: '#',
-      title: 'Notifications',
+      icon: Flame,
+      path: '/layout-3#content',
+      title: 'Trending Content & Searches',
     },
     {
-      icon: CheckSquare,
-      path: '#',
-      title: 'ACL',
+      icon: Database,
+      path: 'https://supabase.com/dashboard/project/zxghphjvwjmvrdjouziq',
+      title: 'Supabase PostgreSQL Console',
+      newTab: true,
     },
     {
-      icon: Code,
-      path: '#',
-      title: 'API Keys',
-    },
-    {
-      icon: HelpCircle,
-      path: 'https://docs.keenthemes.com/metronic-vite',
-      title: 'Docs',
+      icon: Github,
+      path: 'https://github.com/nehalDIU/nehal-CloudStream',
+      title: 'CloudStream GitHub Repo',
+      newTab: true,
     },
   ];
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col grow items-center py-3.5 lg:py-0 gap-2.5">
+      <div className="flex flex-col grow items-center py-3.5 lg:py-0 gap-2">
         {items.map((item, index) => (
           <Tooltip key={index}>
             <TooltipTrigger asChild>
@@ -95,8 +75,8 @@ export function SidebarMenu() {
                 mode="icon"
                 {...(item.active ? { 'data-state': 'open' } : {})}
                 className={cn(
-                  'data-[state=open]:bg-background data-[state=open]:border data-[state=open]:border-input data-[state=open]:text-primary',
-                  'hover:bg-background hover:border hover:border-input hover:text-primary',
+                  'data-[state=open]:bg-primary/10 data-[state=open]:border data-[state=open]:border-primary/30 data-[state=open]:text-primary',
+                  'hover:bg-accent/60 hover:text-foreground transition-colors',
                 )}
               >
                 <Link

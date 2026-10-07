@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { ChevronDown, Menu } from 'lucide-react';
-import { MENU_ROOT } from '@/config/layout-3.config';
+'use client';
+
+import { Activity, Menu } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
-import { cn } from '@/lib/utils';
 import {
   Sheet,
   SheetBody,
@@ -10,32 +9,15 @@ import {
   SheetHeader,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { SidebarMenu } from './sidebar-menu';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function HeaderLogo() {
-  const pathname = usePathname();
-  const [selectedMenuItem, setSelectedMenuItem] = useState(MENU_ROOT[1]);
-
-  useEffect(() => {
-    MENU_ROOT.forEach((item) => {
-      if (item.rootPath && pathname.includes(item.rootPath)) {
-        setSelectedMenuItem(item);
-      }
-    });
-  }, [pathname]);
-
   return (
-    <div className="flex items-center gap-2.5">
-      {/* Logo */}
+    <div className="flex items-center gap-3">
+      {/* Logo and Mobile Menu Trigger */}
       <div className="flex items-center justify-center lg:w-(--sidebar-width) shrink-0">
         <Sheet>
           <SheetTrigger asChild>
@@ -55,7 +37,7 @@ export function HeaderLogo() {
           </SheetContent>
         </Sheet>
 
-        <Link href="/layout-3" className="mx-1">
+        <Link href="/layout-3" className="mx-1 flex items-center gap-2">
           <img
             src={toAbsoluteUrl('/media/app/mini-logo-primary.svg')}
             className="dark:hidden min-h-[24px]"
@@ -69,35 +51,23 @@ export function HeaderLogo() {
         </Link>
       </div>
 
-      {/* Menu Section */}
-      <div className="flex items-center gap-3">
-        <h3 className="text-accent-foreground text-base hidden md:block font-semibold">
+      {/* Brand & Section Title */}
+      <div className="flex items-center gap-2.5">
+        <Link href="/layout-3" className="text-foreground font-bold text-base hover:text-primary transition-colors">
           Nehal CloudStream
-        </h3>
+        </Link>
         <span className="text-sm text-muted-foreground font-medium hidden md:inline">
           /
         </span>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger className="cursor-pointer text-mono font-medium flex items-center gap-2">
-            {selectedMenuItem.title}
-            <ChevronDown className="size-3.5! text-muted-foreground" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent sideOffset={10} side="bottom" align="start">
-            {MENU_ROOT.map((item, index) => (
-              <DropdownMenuItem
-                key={index}
-                asChild
-                className={cn(item === selectedMenuItem && 'bg-accent')}
-              >
-                <Link href={item.path || ''}>
-                  {item.icon && <item.icon />}
-                  {item.title}
-                </Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="hidden md:flex items-center gap-2">
+          <span className="text-sm font-medium text-foreground">
+            Analytics Command Center
+          </span>
+          <Badge variant="success" appearance="light" size="xs" className="gap-1">
+            <span className="size-1.5 rounded-full bg-green-500 animate-ping" />
+            v1.0 Live
+          </Badge>
+        </div>
       </div>
     </div>
   );

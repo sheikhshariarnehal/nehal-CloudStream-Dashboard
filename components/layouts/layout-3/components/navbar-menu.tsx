@@ -1,129 +1,43 @@
-import { ChevronDown } from 'lucide-react';
-import { MENU_SIDEBAR, MENU_SIDEBAR_CUSTOM } from '@/config/layout-3.config';
-import { MenuConfig } from '@/config/types';
+'use client';
+
+import { Activity, Boxes, Flame, Github, Radio } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useMenu } from '@/hooks/use-menu';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from '@/components/ui/menubar';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export function NavbarMenu() {
-  const pathname = usePathname();
-  let navbarMenu;
-
-  if (pathname.includes('/layout-3')) {
-    navbarMenu = MENU_SIDEBAR?.[2];
-  } else if (pathname.includes('/layout-3')) {
-    navbarMenu = MENU_SIDEBAR?.[4];
-  } else if (pathname.includes('/layout-3')) {
-    navbarMenu = MENU_SIDEBAR_CUSTOM?.[0];
-  } else if (pathname.includes('/layout-3')) {
-    navbarMenu = MENU_SIDEBAR?.[5];
-  } else {
-    navbarMenu = MENU_SIDEBAR?.[3];
-  }
-
-  const { isActive, hasActiveChild } = useMenu(pathname);
-
-  const buildMenu = (items: MenuConfig) => {
-    return items.map((item, index) => {
-      if (item.children) {
-        return (
-          <MenubarMenu key={index}>
-            <MenubarTrigger
-              className={cn(
-                'flex items-center gap-1 px-0 py-3.5 text-sm text-secondary-foreground text-nowrap',
-                'rounded-none border-b-2 border-transparent bg-transparent!',
-                'hover:text-mono hover:bg-transparent',
-                'focus:text-mono focus:bg-transparent',
-                'data-[state=open]:bg-transparent data-[state=open]:text-mono',
-                'data-[here=true]:text-mono data-[here=true]:border-mono',
-              )}
-              data-active={isActive(item.path) || undefined}
-              data-here={hasActiveChild(item.children) || undefined}
-            >
-              {item.title}
-              <ChevronDown className="ms-auto size-3.5!" />
-            </MenubarTrigger>
-            <MenubarContent className="min-w-[175px]" sideOffset={0}>
-              {buildSubMenu(item.children)}
-            </MenubarContent>
-          </MenubarMenu>
-        );
-      } else {
-        return (
-          <MenubarMenu key={index}>
-            <MenubarTrigger
-              asChild
-              className={cn(
-                'flex items-center py-3.5 text-sm text-secondary-foreground px-3 text-nowrap',
-                'rounded-none border-b-2 border-transparent bg-transparent!',
-                'hover:text-mono hover:bg-transparent',
-                'focus:text-mono focus:bg-transparent',
-                'data-[active=true]:text-mono data-[active=true]:border-mono',
-              )}
-            >
-              <Link
-                href={item.path || ''}
-                data-active={isActive(item.path) || undefined}
-                data-here={hasActiveChild(item.children) || undefined}
-              >
-                {item.title}
-              </Link>
-            </MenubarTrigger>
-          </MenubarMenu>
-        );
-      }
-    });
-  };
-
-  const buildSubMenu = (items: MenuConfig) => {
-    return items.map((item, index) => {
-      if (item.children) {
-        return (
-          <MenubarSub key={index}>
-            <MenubarSubTrigger
-              data-active={isActive(item.path) || undefined}
-              data-here={hasActiveChild(item.children) || undefined}
-            >
-              <span>{item.title}</span>
-            </MenubarSubTrigger>
-            <MenubarSubContent className="min-w-[175px]">
-              {buildSubMenu(item.children)}
-            </MenubarSubContent>
-          </MenubarSub>
-        );
-      } else {
-        return (
-          <MenubarItem
-            key={index}
-            asChild
-            data-active={isActive(item.path) || undefined}
-            data-here={hasActiveChild(item.children) || undefined}
-          >
-            <Link href={item.path || ''}>{item.title}</Link>
-          </MenubarItem>
-        );
-      }
-    });
-  };
+  const navItems = [
+    { title: 'Overview & Live Presence', icon: Activity, href: '/layout-3' },
+    { title: 'Providers Radar (23)', icon: Boxes, href: '/layout-3#providers' },
+    { title: 'Search & Content Trends', icon: Flame, href: '/layout-3#content' },
+    { title: 'Live Stream Ticker', icon: Radio, href: '/layout-3#stream' },
+    {
+      title: 'GitHub Repo',
+      icon: Github,
+      href: 'https://github.com/nehalDIU/nehal-CloudStream',
+      external: true,
+    },
+  ];
 
   return (
-    <div className="grid">
-      <div className="kt-scrollable-x-auto flex items-stretch">
-        <Menubar className="space-x-0 flex items-stretch border-none bg-transparent gap-5 p-0 h-auto">
-          {buildMenu(navbarMenu.children as MenuConfig)}
-        </Menubar>
-      </div>
+    <div className="flex items-center gap-1 overflow-x-auto py-1">
+      {navItems.map((item, idx) => {
+        const Icon = item.icon;
+        return (
+          <Link
+            key={idx}
+            href={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+            className={cn(
+              'flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors whitespace-nowrap',
+              idx === 0 ? 'text-primary bg-primary/10 font-semibold' : ''
+            )}
+          >
+            <Icon className="size-3.5 shrink-0" />
+            <span>{item.title}</span>
+          </Link>
+        );
+      })}
     </div>
   );
 }

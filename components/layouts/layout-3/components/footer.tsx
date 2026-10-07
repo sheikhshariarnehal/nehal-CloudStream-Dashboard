@@ -1,57 +1,41 @@
-import { generalSettings } from '@/config/general.config';
-
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer">
+    <footer className="footer border-t border-border/50 bg-background/50 backdrop-blur-xs mt-10">
       <div className="container">
-        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center gap-3 py-5">
-          <div className="flex order-2 md:order-1  gap-2 font-normal text-sm">
-            <span className="text-muted-foreground">{currentYear} &copy;</span>
-            <a
-              href="https://keenthemes.com"
-              target="_blank"
-              className="text-secondary-foreground hover:text-primary"
-            >
-              Keenthemes Inc.
-            </a>
+        <div className="flex flex-col md:flex-row justify-center md:justify-between items-center gap-3 py-4">
+          <div className="flex order-2 md:order-1 items-center gap-2 font-normal text-xs text-muted-foreground">
+            <span>{currentYear} &copy;</span>
+            <span className="font-semibold text-foreground">
+              Nehal CloudStream Analytics
+            </span>
+            <span>&bull;</span>
+            <span>Real-time Scraper & Presence Telemetry</span>
           </div>
-          <nav className="flex order-1 md:order-2 gap-4 font-normal text-sm text-muted-foreground">
+          <nav className="flex order-1 md:order-2 gap-4 font-normal text-xs text-muted-foreground">
             <a
-              href={generalSettings.docsLink}
+              href="https://github.com/nehalDIU/nehal-CloudStream"
               target="_blank"
-              className="hover:text-primary"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
             >
-              Docs
+              GitHub Repository
             </a>
             <a
-              href={generalSettings.purchaseLink}
+              href="/api/track"
               target="_blank"
-              className="hover:text-primary"
+              className="hover:text-primary transition-colors"
             >
-              Purchase
+              API Status
             </a>
             <a
-              href={generalSettings.faqLink}
+              href="https://supabase.com/dashboard/project/zxghphjvwjmvrdjouziq"
               target="_blank"
-              className="hover:text-primary"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
             >
-              FAQ
-            </a>
-            <a
-              href="https://devs.keenthemes.com"
-              target="_blank"
-              className="hover:text-primary"
-            >
-              Support
-            </a>
-            <a
-              href={generalSettings.licenseLink}
-              target="_blank"
-              className="hover:text-primary"
-            >
-              License
+              Supabase Console
             </a>
           </nav>
         </div>

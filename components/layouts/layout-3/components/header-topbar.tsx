@@ -1,76 +1,48 @@
+'use client';
+
 import {
-  LayoutGrid,
-  MessageCircleMore,
-  MessageSquareDot,
-  Search,
+  Database,
+  Github,
+  Radio,
 } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
-import { ChatSheet } from '../../layout-1/shared/topbar/chat-sheet';
-import { SearchDialog } from '../../layout-1/shared/dialogs/search/search-dialog';
+import { Badge } from '@/components/ui/badge';
 import { UserDropdownMenu } from '../../layout-1/shared/topbar/user-dropdown-menu';
-import { AppsDropdownMenu } from '../../layout-1/shared/topbar/apps-dropdown-menu';
-import { NotificationsSheet } from '../../layout-1/shared/topbar/notifications-sheet';
 import Link from 'next/link';
 
 export function HeaderTopbar() {
   return (
-    <div className="flex items-center gap-2 lg:gap-3.5">
-      <Button asChild className="hidden md:inline-flex">
-        <Link href="/layout-3/empty">Get Started</Link>
+    <div className="flex items-center gap-2 lg:gap-3">
+      {/* GitHub Repo Link */}
+      <Button variant="outline" size="sm" asChild className="hidden sm:inline-flex gap-1.5 text-xs">
+        <Link
+          href="https://github.com/nehalDIU/nehal-CloudStream"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Github className="size-3.5" />
+          <span>GitHub Repo</span>
+        </Link>
       </Button>
-      <SearchDialog
-        trigger={
-          <Button
-            variant="ghost"
-            mode="icon"
-            shape="circle"
-            className="hover:[&_svg]:text-primary"
-          >
-            <Search className="size-4.5!" />
-          </Button>
-        }
-      />
-      <ChatSheet
-        trigger={
-          <Button
-            variant="ghost"
-            mode="icon"
-            shape="circle"
-            className="hover:[&_svg]:text-primary"
-          >
-            <MessageCircleMore className="size-4.5!" />
-          </Button>
-        }
-      />
-      <AppsDropdownMenu
-        trigger={
-          <Button
-            variant="ghost"
-            mode="icon"
-            shape="circle"
-            className="hover:[&_svg]:text-primary"
-          >
-            <LayoutGrid className="size-4.5!" />
-          </Button>
-        }
-      />
-      <NotificationsSheet
-        trigger={
-          <Button
-            variant="ghost"
-            mode="icon"
-            shape="circle"
-            className="hover:[&_svg]:text-primary"
-          >
-            <MessageSquareDot className="size-4.5!" />
-          </Button>
-        }
-      />
+
+      {/* Supabase Link */}
+      <Button variant="outline" size="sm" asChild className="hidden md:inline-flex gap-1.5 text-xs">
+        <Link
+          href="https://supabase.com/dashboard/project/zxghphjvwjmvrdjouziq"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Database className="size-3.5 text-emerald-500" />
+          <span>Supabase DB</span>
+        </Link>
+      </Button>
+
+      {/* User Avatar */}
       <UserDropdownMenu
         trigger={
           <img
-            className="size-9 rounded-full border-2 border-input shrink-0 cursor-pointer"
+            className="size-8 rounded-full border border-border shrink-0 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
             src={toAbsoluteUrl('/media/avatars/gray/5.png')}
             alt="User Avatar"
           />
