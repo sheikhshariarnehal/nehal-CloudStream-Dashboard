@@ -2,10 +2,6 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import {
-  Toolbar,
-  ToolbarActions,
-} from '@/components/layouts/layout-3/components/toolbar';
-import {
   Card,
   CardContent,
   CardHeader,
@@ -46,6 +42,11 @@ import {
   CheckCircle2,
   Sparkles,
   ExternalLink,
+  Compass,
+  Tv,
+  Eye,
+  Zap,
+  Server,
 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import Link from 'next/link';
@@ -86,29 +87,29 @@ interface DashboardStats {
 }
 
 const ALL_PROVIDERS = [
-  { name: 'MovieBoxProviderIN', type: 'Movies & Series', region: 'Global' },
-  { name: 'VegaMovies', type: 'Dual Audio & HD', region: 'India/Global' },
-  { name: 'CastleTvProvider', type: 'Live TV & VOD', region: 'India/BD' },
-  { name: 'FTPBD', type: 'BDIX Fast Stream', region: 'Bangladesh' },
-  { name: 'CineplexBD', type: 'Bangla Cinema', region: 'Bangladesh' },
-  { name: 'AnimeDekhoProvider', type: 'Anime & Dub', region: 'India/Global' },
-  { name: 'AllWish', type: 'Anime & Movies', region: 'Global' },
-  { name: 'Aniwatch', type: 'Anime Sub/Dub', region: 'Global' },
-  { name: 'BanglaPlex', type: 'Bangla Media', region: 'Bangladesh' },
-  { name: 'BdixCircleftp', type: 'BDIX FTP Stream', region: 'Bangladesh' },
-  { name: 'BdixCircleFtpOld', type: 'BDIX Archive', region: 'Bangladesh' },
-  { name: 'BdixICCFtp', type: 'BDIX Media Hub', region: 'Bangladesh' },
-  { name: 'CTGMovies', type: 'Regional Movies', region: 'Bangladesh' },
-  { name: 'DhakaFlix', type: 'BDIX Streaming', region: 'Bangladesh' },
-  { name: 'DhakaFlixBDIX', type: 'BDIX Dedicated', region: 'Bangladesh' },
-  { name: 'DiscoveryFTP', type: 'FTP Content Hub', region: 'Bangladesh' },
-  { name: 'FmFtp', type: 'FTP Media Server', region: 'Bangladesh' },
-  { name: 'FTPBDMedia', type: 'FTP Fast Mirror', region: 'Bangladesh' },
-  { name: 'JellyfinBD', type: 'Private Media Server', region: 'Bangladesh' },
-  { name: 'MojaLoss', type: 'Entertainment Stream', region: 'Bangladesh' },
-  { name: 'MovieLinkBDProvider', type: 'Movie Direct Links', region: 'Bangladesh' },
-  { name: 'Netmirror', type: 'Multi-VOD Mirrors', region: 'Global' },
-  { name: 'ShowTimeBD', type: 'Bangla ShowTime', region: 'Bangladesh' },
+  { name: 'MovieBoxProviderIN', type: 'Movies & Series', region: 'Global', category: 'Movies' },
+  { name: 'VegaMovies', type: 'Dual Audio & HD', region: 'India / Global', category: 'HD Movies' },
+  { name: 'CastleTvProvider', type: 'Live TV & VOD', region: 'India / BD', category: 'Live TV' },
+  { name: 'FTPBD', type: 'BDIX Fast Stream', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'CineplexBD', type: 'Bangla Cinema', region: 'Bangladesh', category: 'Bangla' },
+  { name: 'AnimeDekhoProvider', type: 'Anime & Dub', region: 'India / Global', category: 'Anime' },
+  { name: 'AllWish', type: 'Anime & Movies', region: 'Global', category: 'Anime' },
+  { name: 'Aniwatch', type: 'Anime Sub / Dub', region: 'Global', category: 'Anime' },
+  { name: 'BanglaPlex', type: 'Bangla Media Hub', region: 'Bangladesh', category: 'Bangla' },
+  { name: 'BdixCircleftp', type: 'BDIX FTP Stream', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'BdixCircleFtpOld', type: 'BDIX Archive', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'BdixICCFtp', type: 'BDIX Media Hub', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'CTGMovies', type: 'Regional Movies', region: 'Bangladesh', category: 'Bangla' },
+  { name: 'DhakaFlix', type: 'BDIX Streaming', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'DhakaFlixBDIX', type: 'BDIX Dedicated', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'DiscoveryFTP', type: 'FTP Content Hub', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'FmFtp', type: 'FTP Media Server', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'FTPBDMedia', type: 'FTP Fast Mirror', region: 'Bangladesh', category: 'BDIX' },
+  { name: 'JellyfinBD', type: 'Private Media Server', region: 'Bangladesh', category: 'Private Server' },
+  { name: 'MojaLoss', type: 'Entertainment Stream', region: 'Bangladesh', category: 'Entertainment' },
+  { name: 'MovieLinkBDProvider', type: 'Movie Direct Links', region: 'Bangladesh', category: 'Direct Links' },
+  { name: 'Netmirror', type: 'Multi-VOD Mirrors', region: 'Global', category: 'Multi VOD' },
+  { name: 'ShowTimeBD', type: 'Bangla ShowTime', region: 'Bangladesh', category: 'Bangla' },
 ];
 
 export default function Page() {
@@ -249,48 +250,58 @@ export default function Page() {
   }, [stats.liveSessions]);
 
   return (
-    <div className="container py-4 space-y-6">
-      {/* Top Header & Quick Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/60 pb-5">
-        <div className="space-y-1">
+    <div className="container-fluid px-4 sm:px-6 py-5 space-y-6">
+      {/* Top Header Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-border/80 bg-gradient-to-r from-card via-card/95 to-muted/40 shadow-xs">
+        <div className="space-y-1.5">
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-foreground">
               CloudStream Live Analytics
             </h1>
             {isRealtimeActive ? (
-              <Badge variant="success" appearance="light" size="sm" className="gap-1.5 font-medium">
-                <span className="size-2 rounded-full bg-green-500 animate-ping" />
+              <Badge
+                variant="success"
+                appearance="light"
+                size="sm"
+                className="gap-1.5 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+              >
+                <span className="size-2 rounded-full bg-emerald-500 animate-ping" />
                 Live WebSocket
               </Badge>
             ) : (
-              <Badge variant="secondary" appearance="light" size="sm" className="gap-1.5 font-medium">
-                <span className="size-2 rounded-full bg-yellow-500 animate-pulse" />
-                Connecting...
+              <Badge
+                variant="secondary"
+                appearance="light"
+                size="sm"
+                className="gap-1.5 font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20"
+              >
+                <span className="size-2 rounded-full bg-amber-500 animate-pulse" />
+                Connecting WebSocket...
               </Badge>
             )}
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Real-time live presence, scraper health & content telemetry across all 23 repository providers
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={loadStats}
             disabled={isLoading}
-            className="gap-1.5 text-xs h-8.5"
+            className="gap-1.5 text-xs h-9 font-medium shadow-xs"
           >
             <RefreshCw className={`size-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-            <span>Refresh Data</span>
+            <span>Refresh</span>
           </Button>
 
           <Button
             variant="primary"
             size="sm"
             asChild
-            className="gap-1.5 text-xs h-8.5"
+            className="gap-1.5 text-xs h-9 font-medium shadow-xs"
           >
             <Link
               href="https://github.com/nehalDIU/nehal-CloudStream"
@@ -307,184 +318,207 @@ export default function Page() {
       {/* 4 Core Realtime KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Live Users Online */}
-        <Card className="relative overflow-hidden border-border/70 hover:border-border transition-colors">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Radio className="size-16 text-emerald-500 animate-pulse" />
-          </div>
-          <CardHeader className="pb-2 min-h-auto border-none">
-            <CardDescription className="flex items-center gap-1.5 font-medium text-xs">
-              <span className="relative flex size-2">
+        <Card className="relative overflow-hidden border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-card to-card hover:border-emerald-500/50 transition-all shadow-xs">
+          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+              <span className="relative flex size-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full size-2.5 bg-emerald-500"></span>
               </span>
               Live Users Online
             </CardDescription>
+            <div className="size-8 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+              <Radio className="size-4 animate-pulse" />
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-extrabold tracking-tight text-foreground font-mono">
+          <CardContent className="pt-1">
+            <div className="text-3xl sm:text-4xl font-black tracking-tight text-emerald-400 font-mono">
               {stats.summary.liveUsers}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1 flex items-center gap-1">
-              <Clock className="size-3 text-emerald-500" /> Active in last 2 mins
+            <p className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1.5 font-medium">
+              <Clock className="size-3 text-emerald-400" /> Freshness window: last 2 mins
             </p>
           </CardContent>
         </Card>
 
         {/* KPI 2: Streams Played */}
-        <Card className="relative overflow-hidden border-border/70 hover:border-border transition-colors">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <PlayCircle className="size-16 text-sky-500" />
-          </div>
-          <CardHeader className="pb-2 min-h-auto border-none">
-            <CardDescription className="flex items-center gap-1.5 font-medium text-xs">
-              <Film className="size-3.5 text-sky-500" />
+        <Card className="relative overflow-hidden border border-sky-500/30 bg-gradient-to-br from-sky-500/10 via-card to-card hover:border-sky-500/50 transition-all shadow-xs">
+          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+              <Film className="size-3.5 text-sky-400" />
               Streams Played (Today)
             </CardDescription>
+            <div className="size-8 rounded-lg bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-400">
+              <PlayCircle className="size-4" />
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-extrabold tracking-tight text-foreground font-mono">
+          <CardContent className="pt-1">
+            <div className="text-3xl sm:text-4xl font-black tracking-tight text-sky-400 font-mono">
               {stats.summary.playsToday}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
-              Video link extractions resolved
+            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+              Playback link extractions resolved
             </p>
           </CardContent>
         </Card>
 
         {/* KPI 3: Searches Today */}
-        <Card className="relative overflow-hidden border-border/70 hover:border-border transition-colors">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <Search className="size-16 text-violet-500" />
-          </div>
-          <CardHeader className="pb-2 min-h-auto border-none">
-            <CardDescription className="flex items-center gap-1.5 font-medium text-xs">
-              <Search className="size-3.5 text-violet-500" />
+        <Card className="relative overflow-hidden border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-card to-card hover:border-violet-500/50 transition-all shadow-xs">
+          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+              <Search className="size-3.5 text-violet-400" />
               Searches (Today)
             </CardDescription>
+            <div className="size-8 rounded-lg bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400">
+              <Search className="size-4" />
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-extrabold tracking-tight text-foreground font-mono">
+          <CardContent className="pt-1">
+            <div className="text-3xl sm:text-4xl font-black tracking-tight text-violet-400 font-mono">
               {stats.summary.searchesToday}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
+            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
               User query searches across providers
             </p>
           </CardContent>
         </Card>
 
         {/* KPI 4: Scraper Health */}
-        <Card className="relative overflow-hidden border-border/70 hover:border-border transition-colors">
-          <div className="absolute top-0 right-0 p-4 opacity-10">
-            <ShieldCheck className="size-16 text-teal-500" />
-          </div>
-          <CardHeader className="pb-2 min-h-auto border-none">
-            <CardDescription className="flex items-center gap-1.5 font-medium text-xs">
-              <ShieldCheck className="size-3.5 text-teal-500" />
-              Scraper Health
+        <Card className="relative overflow-hidden border border-teal-500/30 bg-gradient-to-br from-teal-500/10 via-card to-card hover:border-teal-500/50 transition-all shadow-xs">
+          <CardHeader className="pb-2 min-h-auto border-none flex-row items-center justify-between space-y-0">
+            <CardDescription className="flex items-center gap-2 font-semibold text-xs text-foreground">
+              <ShieldCheck className="size-3.5 text-teal-400" />
+              Scraper Health Status
             </CardDescription>
+            <div className="size-8 rounded-lg bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400">
+              <ShieldCheck className="size-4" />
+            </div>
           </CardHeader>
-          <CardContent className="pt-0">
-            <div className="text-3xl font-extrabold tracking-tight text-foreground font-mono flex items-center gap-2">
+          <CardContent className="pt-1">
+            <div className="text-3xl sm:text-4xl font-black tracking-tight text-teal-400 font-mono flex items-center gap-2.5">
               <span>{stats.summary.errorsToday === 0 ? '100%' : `${Math.max(0, 100 - stats.summary.errorsToday * 2)}%`}</span>
               {stats.summary.errorsToday === 0 ? (
-                <Badge variant="success" size="xs">Optimal</Badge>
+                <Badge variant="success" size="xs" className="font-semibold bg-emerald-500/15 text-emerald-400 border-emerald-500/30">
+                  Optimal
+                </Badge>
               ) : (
-                <Badge variant="warning" size="xs">{stats.summary.errorsToday} Errors</Badge>
+                <Badge variant="warning" size="xs" className="font-semibold">
+                  {stats.summary.errorsToday} Errors
+                </Badge>
               )}
             </div>
-            <p className="text-[11px] text-muted-foreground mt-1">
-              23 providers operational
+            <p className="text-[11px] text-muted-foreground mt-1.5 font-medium">
+              Zero blocking crashes detected
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Main Tabs Navigation */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList variant="line" size="md">
-          <TabsTrigger value="overview" className="gap-2">
-            <Activity className="size-4" />
-            Live Presence & Feed
-          </TabsTrigger>
-          <TabsTrigger value="providers" className="gap-2">
-            <Boxes className="size-4" />
-            Providers Radar (23)
-          </TabsTrigger>
-          <TabsTrigger value="content" className="gap-2">
-            <Flame className="size-4" />
-            Trending Content & Search
-          </TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
+        <div className="border-b border-border/80 pb-1">
+          <TabsList variant="line" size="md" className="gap-4">
+            <TabsTrigger value="overview" className="gap-2 text-xs sm:text-sm font-semibold">
+              <Activity className="size-4 text-emerald-400" />
+              Live Presence & Feed
+              {stats.liveSessions.length > 0 && (
+                <Badge variant="success" size="xs" className="ms-1 font-mono">
+                  {stats.liveSessions.length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="providers" className="gap-2 text-xs sm:text-sm font-semibold">
+              <Boxes className="size-4 text-sky-400" />
+              Providers Radar (23)
+            </TabsTrigger>
+            <TabsTrigger value="content" className="gap-2 text-xs sm:text-sm font-semibold">
+              <Flame className="size-4 text-violet-400" />
+              Top Searches & Content
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* TAB 1: OVERVIEW & REAL-TIME PRESENCE */}
-        <TabsContent value="overview" className="space-y-4">
+        <TabsContent value="overview" className="space-y-6 mt-0">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Live Active Sessions Table */}
-            <Card className="lg:col-span-8">
-              <CardHeader>
-                <div className="space-y-0.5">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Radio className="size-4 text-emerald-500 animate-pulse" />
-                    Live Active Sessions ({stats.liveSessions.length})
-                  </CardTitle>
-                  <CardDescription>
-                    Real-time list of devices actively browsing or streaming right now
-                  </CardDescription>
+            <Card className="lg:col-span-8 border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <CardTitle className="text-base font-bold flex items-center gap-2">
+                      <Radio className="size-4 text-emerald-400 animate-pulse" />
+                      Live Active Sessions ({stats.liveSessions.length})
+                    </CardTitle>
+                    <CardDescription className="text-xs">
+                      Real-time list of devices actively browsing or streaming right now
+                    </CardDescription>
+                  </div>
+                  <Badge variant="secondary" size="xs" className="font-mono">
+                    2 min window
+                  </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="p-0 overflow-x-auto">
                 {stats.liveSessions.length === 0 ? (
-                  <div className="p-10 text-center text-muted-foreground space-y-2">
-                    <Radio className="size-10 mx-auto text-muted-foreground/40 animate-pulse" />
-                    <p className="text-sm font-medium text-foreground">Waiting for live device heartbeats...</p>
-                    <p className="text-xs max-w-sm mx-auto">
-                      When users open any of your 23 providers on CloudStream, their live presence and watching status appear here automatically.
+                  <div className="p-12 text-center text-muted-foreground space-y-3">
+                    <div className="size-12 rounded-full bg-muted/60 border border-border/60 flex items-center justify-center mx-auto text-emerald-400/80">
+                      <Radio className="size-6 animate-pulse" />
+                    </div>
+                    <p className="text-sm font-semibold text-foreground">Waiting for live device heartbeats...</p>
+                    <p className="text-xs max-w-md mx-auto text-muted-foreground">
+                      When users open CloudStream with telemetry enabled, their live presence and watching activity appear here automatically.
                     </p>
                   </div>
                 ) : (
                   <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Device ID</TableHead>
-                        <TableHead>Provider</TableHead>
-                        <TableHead>Activity / Title</TableHead>
-                        <TableHead>Location</TableHead>
-                        <TableHead className="text-right">Last Ping</TableHead>
+                    <TableHeader className="bg-muted/40">
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="font-semibold text-xs">Device</TableHead>
+                        <TableHead className="font-semibold text-xs">Provider</TableHead>
+                        <TableHead className="font-semibold text-xs">Activity / Title</TableHead>
+                        <TableHead className="font-semibold text-xs">Location</TableHead>
+                        <TableHead className="text-right font-semibold text-xs">Last Ping</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {stats.liveSessions.map((session) => (
-                        <TableRow key={session.device_id}>
+                        <TableRow key={session.device_id} className="hover:bg-muted/30 transition-colors">
                           <TableCell className="font-mono text-xs text-muted-foreground">
-                            {session.device_id.slice(0, 8)}...
+                            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/60 border border-border/60 text-[11px]">
+                              📱 {session.device_id.slice(0, 8)}...
+                            </span>
                           </TableCell>
                           <TableCell>
-                            <Badge variant="primary" appearance="light" size="sm">
+                            <Badge variant="primary" appearance="light" size="sm" className="font-semibold">
                               {session.provider}
                             </Badge>
                           </TableCell>
-                          <TableCell className="max-w-[200px] truncate text-xs">
+                          <TableCell className="max-w-[220px] truncate text-xs">
                             {session.current_title ? (
-                              <span className="font-medium text-foreground flex items-center gap-1">
-                                <Film className="size-3 text-primary shrink-0" />
+                              <span className="font-semibold text-foreground flex items-center gap-1.5 truncate">
+                                <Film className="size-3.5 text-sky-400 shrink-0" />
                                 {session.current_title}
                               </span>
                             ) : (
-                              <span className="text-muted-foreground italic">
+                              <span className="text-muted-foreground flex items-center gap-1.5 text-[11px] italic">
+                                <Compass className="size-3 text-muted-foreground/60 shrink-0" />
                                 Browsing catalog
                               </span>
                             )}
                           </TableCell>
                           <TableCell className="text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Globe className="size-3 text-muted-foreground/70" />
-                              {session.country || 'Unknown'} {session.city ? `(${session.city})` : ''}
+                            <span className="inline-flex items-center gap-1 text-[11px] bg-muted/40 px-2 py-0.5 rounded-md border border-border/50">
+                              🌍 {session.country || 'Global'} {session.city ? `(${session.city})` : ''}
                             </span>
                           </TableCell>
-                          <TableCell className="text-right text-xs text-muted-foreground font-mono">
-                            {formatDistanceToNow(new Date(session.last_active), {
-                              addSuffix: true,
-                            })}
+                          <TableCell className="text-right text-xs font-mono text-muted-foreground">
+                            <span className="inline-flex items-center gap-1.5 text-emerald-400">
+                              <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                              {formatDistanceToNow(new Date(session.last_active), {
+                                addSuffix: true,
+                              })}
+                            </span>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -495,66 +529,85 @@ export default function Page() {
             </Card>
 
             {/* Realtime Event Stream Ticker */}
-            <Card className="lg:col-span-4">
-              <CardHeader>
+            <Card className="lg:col-span-4 border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
                 <div className="space-y-0.5">
-                  <CardTitle className="text-base flex items-center gap-2">
-                    <Activity className="size-4 text-primary" />
+                  <CardTitle className="text-base font-bold flex items-center gap-2">
+                    <Zap className="size-4 text-violet-400" />
                     Live Activity Stream
                   </CardTitle>
-                  <CardDescription>Instant event ticker</CardDescription>
+                  <CardDescription className="text-xs">Instant telemetry ticker</CardDescription>
                 </div>
               </CardHeader>
-              <CardContent className="p-4 space-y-2.5 max-h-[460px] overflow-y-auto">
+              <CardContent className="p-4 space-y-2.5 max-h-[500px] overflow-y-auto">
                 {stats.recentEvents.length === 0 ? (
-                  <p className="text-xs text-muted-foreground text-center py-10">
+                  <p className="text-xs text-muted-foreground text-center py-12">
                     No recent events received yet today.
                   </p>
                 ) : (
-                  stats.recentEvents.map((event) => (
-                    <div
-                      key={event.id}
-                      className="p-3 rounded-xl border border-border/60 bg-muted/30 text-xs space-y-1.5 transition-all hover:bg-muted/60"
-                    >
-                      <div className="flex items-center justify-between">
-                        <Badge
-                          variant={
-                            event.event_type === 'play'
-                              ? 'success'
-                              : event.event_type === 'search'
-                              ? 'info'
-                              : event.event_type === 'error'
-                              ? 'destructive'
-                              : 'secondary'
-                          }
-                          size="xs"
-                        >
-                          {event.event_type.toUpperCase()}
-                        </Badge>
-                        <span className="text-[10px] text-muted-foreground font-mono">
-                          {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
-                        </span>
+                  stats.recentEvents.map((event) => {
+                    const isSearch = event.event_type === 'search';
+                    const isPlay = event.event_type === 'play';
+                    const isView = event.event_type === 'view';
+                    const isHeartbeat = event.event_type === 'heartbeat';
+                    const isError = event.event_type === 'error';
+
+                    return (
+                      <div
+                        key={event.id}
+                        className={`p-3 rounded-xl border text-xs space-y-1.5 transition-all hover:brightness-110 ${
+                          isPlay
+                            ? 'border-l-4 border-l-emerald-500 border-border/60 bg-emerald-950/20'
+                            : isSearch
+                            ? 'border-l-4 border-l-violet-500 border-border/60 bg-violet-950/20'
+                            : isView
+                            ? 'border-l-4 border-l-amber-500 border-border/60 bg-amber-950/20'
+                            : isHeartbeat
+                            ? 'border-l-4 border-l-sky-500 border-border/60 bg-sky-950/20'
+                            : 'border-l-4 border-l-rose-500 border-border/60 bg-rose-950/20'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <Badge
+                            variant={
+                              isPlay
+                                ? 'success'
+                                : isSearch
+                                ? 'info'
+                                : isError
+                                ? 'destructive'
+                                : 'secondary'
+                            }
+                            size="xs"
+                            className="font-bold tracking-wider text-[10px]"
+                          >
+                            {event.event_type.toUpperCase()}
+                          </Badge>
+                          <span className="text-[10px] text-muted-foreground font-mono">
+                            {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
+                          </span>
+                        </div>
+                        <div className="font-medium text-foreground truncate text-[11px]">
+                          <span className="text-primary font-bold">{event.provider}</span>:{' '}
+                          {isSearch && (
+                            <span className="text-foreground">Searched &quot;<span className="font-semibold text-violet-300">{event.metadata?.query}</span>&quot;</span>
+                          )}
+                          {isPlay && (
+                            <span className="text-emerald-300 font-semibold">Streaming playback resolved</span>
+                          )}
+                          {isView && (
+                            <span>Opened &quot;<span className="font-semibold">{event.metadata?.title || 'Details'}</span>&quot;</span>
+                          )}
+                          {isHeartbeat && (
+                            <span className="text-muted-foreground">Active device heartbeat</span>
+                          )}
+                          {isError && (
+                            <span className="text-destructive font-semibold">{event.metadata?.error || 'Scraper exception'}</span>
+                          )}
+                        </div>
                       </div>
-                      <div className="font-medium text-foreground truncate text-[11px]">
-                        <span className="text-primary font-semibold">{event.provider}</span>:{' '}
-                        {event.event_type === 'search' && (
-                          <span>Searched &quot;{event.metadata?.query}&quot;</span>
-                        )}
-                        {event.event_type === 'play' && (
-                          <span>Streaming playback started</span>
-                        )}
-                        {event.event_type === 'view' && (
-                          <span>Opened &quot;{event.metadata?.title || 'Details'}&quot;</span>
-                        )}
-                        {event.event_type === 'heartbeat' && (
-                          <span className="text-muted-foreground">Active heartbeat</span>
-                        )}
-                        {event.event_type === 'error' && (
-                          <span className="text-destructive font-medium">{event.metadata?.error || 'Scraper exception'}</span>
-                        )}
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 )}
               </CardContent>
             </Card>
@@ -562,17 +615,22 @@ export default function Page() {
         </TabsContent>
 
         {/* TAB 2: PROVIDERS RADAR (23 PROVIDERS) */}
-        <TabsContent value="providers" className="space-y-4">
+        <TabsContent value="providers" className="space-y-6 mt-0">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Live Traffic Share */}
-            <Card className="lg:col-span-4">
-              <CardHeader>
-                <CardTitle className="text-base">Active Traffic Share</CardTitle>
-                <CardDescription>Live session distribution across providers</CardDescription>
+            <Card className="lg:col-span-4 border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
+                <CardTitle className="text-base font-bold flex items-center gap-2">
+                  <Activity className="size-4 text-emerald-400" />
+                  Active Traffic Share
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Live session distribution across providers
+                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="p-4 space-y-4">
                 {liveProviderDistribution.length === 0 ? (
-                  <p className="text-xs text-muted-foreground text-center py-8">
+                  <p className="text-xs text-muted-foreground text-center py-10">
                     No active sessions right now.
                   </p>
                 ) : (
@@ -580,16 +638,16 @@ export default function Page() {
                     const pct = Math.round((count / (stats.liveSessions.length || 1)) * 100);
                     return (
                       <div key={provider} className="space-y-1.5">
-                        <div className="flex items-center justify-between text-xs font-medium">
+                        <div className="flex items-center justify-between text-xs font-semibold">
                           <span className="flex items-center gap-1.5">
-                            <span className="size-2 rounded-full bg-primary" />
+                            <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
                             {provider}
                           </span>
                           <span className="text-muted-foreground font-mono">
                             {count} users ({pct}%)
                           </span>
                         </div>
-                        <Progress value={pct} />
+                        <Progress value={pct} className="h-2 bg-muted/60" />
                       </div>
                     );
                   })
@@ -598,49 +656,51 @@ export default function Page() {
             </Card>
 
             {/* 23 Providers Status Grid */}
-            <Card className="lg:col-span-8">
-              <CardHeader>
+            <Card className="lg:col-span-8 border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-base flex items-center gap-2">
-                      <Boxes className="size-4 text-primary" />
+                    <CardTitle className="text-base font-bold flex items-center gap-2">
+                      <Boxes className="size-4 text-sky-400" />
                       All Repository Providers (23)
                     </CardTitle>
-                    <CardDescription>
-                      Full fleet status in nehal-CloudStream
+                    <CardDescription className="text-xs">
+                      Fleet status across nehal-CloudStream
                     </CardDescription>
                   </div>
-                  <Badge variant="success" appearance="light" size="xs">
-                    23 / 23 Active
+                  <Badge variant="success" appearance="light" size="xs" className="font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    23 / 23 Operational
                   </Badge>
                 </div>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="p-0 overflow-x-auto">
                 <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Provider Name</TableHead>
-                      <TableHead>Category / Genre</TableHead>
-                      <TableHead>Region</TableHead>
-                      <TableHead className="text-right">Health Status</TableHead>
+                  <TableHeader className="bg-muted/40">
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="font-semibold text-xs">Provider Name</TableHead>
+                      <TableHead className="font-semibold text-xs">Category</TableHead>
+                      <TableHead className="font-semibold text-xs">Coverage Region</TableHead>
+                      <TableHead className="text-right font-semibold text-xs">Health Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {ALL_PROVIDERS.map((p) => (
-                      <TableRow key={p.name}>
-                        <TableCell className="font-semibold text-xs text-foreground">
+                      <TableRow key={p.name} className="hover:bg-muted/30 transition-colors">
+                        <TableCell className="font-bold text-xs text-foreground">
                           {p.name}
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
-                          {p.type}
+                          <span className="px-2 py-0.5 rounded-md bg-muted/60 text-[11px] border border-border/50">
+                            {p.category}
+                          </span>
                         </TableCell>
                         <TableCell className="text-xs text-muted-foreground">
                           {p.region}
                         </TableCell>
                         <TableCell className="text-right">
-                          <Badge variant="success" appearance="light" size="xs" className="gap-1">
-                            <CheckCircle2 className="size-3 text-green-500" />
-                            Active
+                          <Badge variant="success" appearance="light" size="xs" className="gap-1 font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <CheckCircle2 className="size-3 text-emerald-400" />
+                            Operational
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -653,40 +713,42 @@ export default function Page() {
         </TabsContent>
 
         {/* TAB 3: SEARCH & CONTENT TRENDS */}
-        <TabsContent value="content" className="space-y-4">
+        <TabsContent value="content" className="space-y-6 mt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Search className="size-4 text-violet-500" />
+            <Card className="border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
+                <CardTitle className="text-base font-bold flex items-center gap-2">
+                  <Search className="size-4 text-violet-400" />
                   Top Search Queries Today
                 </CardTitle>
-                <CardDescription>Most frequently searched titles across all providers</CardDescription>
+                <CardDescription className="text-xs">
+                  Most frequently searched titles across all providers
+                </CardDescription>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="p-0 overflow-x-auto">
                 {stats.topSearches.length === 0 ? (
-                  <p className="text-xs text-muted-foreground text-center py-10">
+                  <p className="text-xs text-muted-foreground text-center py-12">
                     No search queries recorded today yet.
                   </p>
                 ) : (
                   <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Keyword</TableHead>
-                        <TableHead className="text-right">Searches</TableHead>
-                        <TableHead className="text-right">Recency</TableHead>
+                    <TableHeader className="bg-muted/40">
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="font-semibold text-xs">Keyword</TableHead>
+                        <TableHead className="text-right font-semibold text-xs">Searches</TableHead>
+                        <TableHead className="text-right font-semibold text-xs">Last Seen</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {stats.topSearches.map((item, idx) => (
-                        <TableRow key={idx}>
-                          <TableCell className="font-medium text-xs flex items-center gap-2">
-                            <span className="size-5 rounded bg-muted flex items-center justify-center text-[10px] font-bold">
-                              #{idx + 1}
+                        <TableRow key={idx} className="hover:bg-muted/30 transition-colors">
+                          <TableCell className="font-semibold text-xs flex items-center gap-2">
+                            <span className="size-5 rounded-md bg-muted/80 border border-border flex items-center justify-center text-[10px] font-mono font-bold text-foreground">
+                              {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
                             </span>
                             {item.query}
                           </TableCell>
-                          <TableCell className="text-right font-mono text-xs font-semibold text-primary">
+                          <TableCell className="text-right font-mono text-xs font-bold text-violet-400">
                             {item.count}
                           </TableCell>
                           <TableCell className="text-right text-xs text-muted-foreground font-mono">
@@ -700,34 +762,44 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Sparkles className="size-4 text-amber-500" />
-                  Telemetry Infrastructure
+            <Card className="border-border/80 shadow-xs">
+              <CardHeader className="border-b border-border/60 pb-4">
+                <CardTitle className="text-base font-bold flex items-center gap-2">
+                  <Server className="size-4 text-amber-400" />
+                  Telemetry Architecture
                 </CardTitle>
-                <CardDescription>
-                  Zero-latency architecture overview
+                <CardDescription className="text-xs">
+                  Zero-latency telemetry architecture overview
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 text-xs text-muted-foreground">
-                <div className="p-3.5 rounded-xl border border-border/70 bg-muted/40 space-y-1.5">
+              <CardContent className="p-4 space-y-3.5 text-xs text-muted-foreground">
+                <div className="p-3.5 rounded-xl border border-border/80 bg-muted/40 space-y-1.5">
                   <p className="font-semibold text-foreground text-xs flex items-center gap-1.5">
-                    <CheckCircle2 className="size-3.5 text-emerald-500" />
+                    <CheckCircle2 className="size-3.5 text-emerald-400" />
                     Non-Blocking Coroutine Engine
                   </p>
                   <p className="text-[11px] leading-relaxed">
-                    All telemetry requests in CloudStream Kotlin plugins run asynchronously via <code className="text-primary font-mono font-semibold">ioSafe</code> with a 3-second hard timeout. Streaming is 100% immune to network lags or server hiccups.
+                    All telemetry requests in CloudStream Kotlin plugins run asynchronously via <code className="text-primary font-mono font-semibold">ioSafe</code> with a 15-second hard timeout. Playback is 100% immune to network lags or server hiccups.
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-xl border border-border/70 bg-muted/40 space-y-1.5">
+                <div className="p-3.5 rounded-xl border border-border/80 bg-muted/40 space-y-1.5">
                   <p className="font-semibold text-foreground text-xs flex items-center gap-1.5">
-                    <Globe className="size-3.5 text-sky-500" />
+                    <Globe className="size-3.5 text-sky-400" />
                     Automatic Edge Geolocation
                   </p>
                   <p className="text-[11px] leading-relaxed">
-                    Client requests hitting the Vercel ingestion endpoint automatically extract country and city headers with zero client overhead.
+                    Client requests hitting the Vercel ingestion endpoint automatically extract country and city headers with zero client device overhead.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-border/80 bg-muted/40 space-y-1.5">
+                  <p className="font-semibold text-foreground text-xs flex items-center gap-1.5">
+                    <Sparkles className="size-3.5 text-violet-400" />
+                    PostgreSQL Realtime WebSocket
+                  </p>
+                  <p className="text-[11px] leading-relaxed">
+                    All active sessions and event streams synchronize over WebSocket channels directly into your dashboard in real-time.
                   </p>
                 </div>
               </CardContent>
