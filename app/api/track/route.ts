@@ -21,8 +21,14 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { deviceId, provider, event, data, timestamp } = body;
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      const rawText = await req.text();
+      body = rawText ? JSON.parse(rawText) : {};
+    }
+    const { deviceId, provider, event, data, timestamp } = body || {};
 
     if (!deviceId || !provider || !event) {
       return NextResponse.json(
