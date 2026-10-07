@@ -708,7 +708,7 @@ export default function Page() {
                         <TableRow key={idx} className="hover:bg-muted/30 transition-colors">
                           <TableCell className="min-w-[180px] font-semibold text-xs flex items-center gap-2">
                             <span className="size-5 rounded-md bg-muted/80 border border-border flex items-center justify-center text-[10px] font-mono font-bold text-foreground shrink-0">
-                              {idx === 0 ? \'🥇\' : idx === 1 ? \'🥈\' : idx === 2 ? \'🥉\' : `#${idx + 1}`}
+                              {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `#${idx + 1}`}
                             </span>
                             <span className="truncate">{item.query}</span>
                           </TableCell>
